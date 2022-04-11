@@ -26,7 +26,7 @@ La tarea consiste en programar un cliente que consulte esta API mostrando sus re
 
 ### Requisitos 
 - Siéntete libre de usar el lenguaje que creas más oportuno.
-- Aplica TDD o BDD.
+- Aplica TDD o BDD..
 - Muestra la mayor cantidad de información posible.
 - El código debe compilar y ejecutarse en un paso.
 - Puedes usar los frameworks y/o librerías que creas oportunos.
