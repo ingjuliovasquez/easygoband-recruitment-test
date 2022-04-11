@@ -1,10 +1,14 @@
 <template>
   <div id="app">
     <h1>List App</h1>
+    <div style="text-align:left">
+      <small>{{ list.length }} Results</small>
+    </div>
     <v-select
-      :options="list"
-      :reduce="(name) => name.sessions[0].name"
       label="name"
+      :filterable="false"
+      :options="list"
+      @search="onSearch"
     ></v-select>
   </div>
 </template>
@@ -25,28 +29,22 @@ export default {
   },
   async mounted() {
     // TODO: Get first data to providers when te component is mounted
-    const data = await this.getData();
+    const data = await this.getData("");
     this.list = data.data;
-
-    // TODO: Add and get supplier data every 5 seconds
-    setInterval(() => {
-      this.addData();
-    }, 5000);
   },
   methods: {
-    async getData() { // TODO: Get data of rest AWS
-      const headers = { Authorization: "Basic cJmAc71jah17sgqi1jqaksvaksda=" };
+    async onSearch(search, loading) {
+      if (search.length) {
+        loading(true);
 
-      return await axios.get(
-        "https://pnny0h3cuf.execute-api.eu-west-1.amazonaws.com/dev/providers/1",
-        { headers }
-      );
+        const list = await this.getData(search);
+        this.list = list.data;
+        loading(false);
+      }
     },
-    async addData() { // TODO: Add providets data to database, and refresh list of providers
-      const data = await this.getData();
-      await axios.post("/rest/add", data.data);
-
-      this.list = data.data;
+    async getData(word) {
+      // TODO: Get data of rest node js
+      return await axios.get(`http://localhost:3000/get_providers/${word}`);
     },
   },
 };
